@@ -67,31 +67,38 @@ void *receiver(void* threadParameters)
 	freeaddrinfo(servinfo); // all done with this structure
    
     //signal main thread that connection was established
+    printf("Locking conn \n");
     pthread_mutex_lock(&mtx_connection_established);
+    printf("Locked conn \n");
     num_successful_connections += 1; 
+    printf("Modyfying conn \n");
     pthread_mutex_unlock(&mtx_connection_established);
+    printf("unlocked conn \n");
     pthread_cond_signal(&cond_successful_connection);
-    
+    printf("signal conn \n");
     //get start signal from main
+    printf("Locking conn \n");
+    pthread_mutex_lock(&mtx_connection_established);
     while (num_successful_connections != -1) {
-    pthread_cond_wait(&cond_successful_connection, &mtx_connection_established);
+        printf("unlocking conn and waiting for signal \n");
+        pthread_cond_wait(&cond_successful_connection, &mtx_connection_established);
     }
-
+        printf("done waiting \n");
 
     
-    
+    printf("start rec \n");
     if ((recv(sockfd, ((thargs_t*) threadParameters)->inputs, ((thargs_t*) threadParameters)->inputs_size, MSG_WAITALL)) == -1) {
 	    perror("recv");
 	    exit(1);
 	}
     
     //signal main thread that data was received
-    pthread_mutex_lock(&mtx_data_received);
-    num_data_received += 1; 
-    pthread_mutex_unlock(&mtx_data_received);
-    pthread_cond_signal(&cond_data_received);
+    /* pthread_mutex_lock(&mtx_data_received); */
+    /* num_data_received += 1; */ 
+    /* pthread_mutex_unlock(&mtx_data_received); */
+    /* pthread_cond_signal(&cond_data_received); */
     
-	printf("client: received data");
+	printf("client: received data \n");
 
 	close(sockfd);
 

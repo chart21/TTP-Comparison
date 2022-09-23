@@ -1,16 +1,16 @@
 #include <iostream>
 #include <vector>
-#define num_inputs 32
+#define num_inputs 4
 #define DATATYPE int
 #define input_players 2
 #define performFunction psearch
 #define op +
-#define INPUTSLENGTH {100,1}
+#define INPUTSLENGTH {4,1}
 
-void psearch(DATATYPE* inputs[input_players])
+void psearch(DATATYPE** inputs)
 {
     DATATYPE result = 0;
-    for(int i = 1; i < num_inputs; i++)
+    for(int i = 0; i < num_inputs; i++)
     {
         if(inputs[0][i] == inputs[1][0])
             result = 1;

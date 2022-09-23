@@ -1,0 +1,14 @@
+{
+    "configurations":{
+        "Launch":{
+            "adapter": "vscode-cpptools",
+            "configuration": {
+                "request": "launch",
+                "program": "ttp_main.o",
+                "cwd": "~/workspace/ttp_mpc",
+                "externalConsole":true,
+                "MiMode": "gdb"
+            }
+        }
+    }
+}
