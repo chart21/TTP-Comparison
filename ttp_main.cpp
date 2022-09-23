@@ -46,7 +46,7 @@ for(int t=0;t<(input_players-1);t++) {
     thrgs[t].inputs = (char*) &inputs[t];
     thrgs[t].inputs_size = sizeof(DATATYPE) * inputLength[t-1];
     thrgs[t].threadID = t;
-    thrgs[t].client = (char*)"client";
+    thrgs[t].client = (char*)"127.0.0.1";
     thrgs[t].hostname = (char*)"hostname";
     std::cout << "In main: creating thread " << t << "\n";
     ret = pthread_create(&threads[t], NULL, receiver, &thrgs[t]);

@@ -34,4 +34,9 @@ typedef struct thread_arguments {
   //char *length
 } thargs_t;
 
+typedef struct player_arguments {
+  char *inputs;
+  int inputs_size;
+} thargs_p;
+
 

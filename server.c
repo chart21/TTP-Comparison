@@ -52,7 +52,8 @@ void sigchld_handler(int s)
 
 
 
-void *sender(void* threadArguments)
+
+void sender(void* threadParameters)
 {
 	int sockfd, new_fd;  // listen on sock_fd, new connection on new_fd
 	struct addrinfo hints, *servinfo, *p;
@@ -138,12 +139,11 @@ void *sender(void* threadArguments)
 		/* 	exit(0); */
 		/* } */
 		
-        char buf[1024] = { 0 };
-        int len = 1024;
+        //char buf[1024] = { 0 };
         //recv(new_fd, buf, 32, MSG_WAITALL);
-            if (sendall(new_fd, buf, &len) == -1) {
+            if (sendall(new_fd, ((thargs_p*) threadParameters)->inputs, &((thargs_p*) threadParameters)->inputs_size) == -1) {
             perror("sendall");
-            printf("We only sent %d bytes because of the error!\n", len);
+            printf("We only sent %d bytes because of the error!\n", ((thargs_p*) threadParameters)->inputs_size);
 } 
         close(new_fd);  // parent doesn't need this
         shutdown(sockfd, SHUT_RDWR);
