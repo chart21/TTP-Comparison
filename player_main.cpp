@@ -32,7 +32,7 @@ DATATYPE* inputs = new DATATYPE[inputLength[1]]; //create n pointers, each to ho
 readInputFromFile(inputs,player_id,inputLength[1]);
 
 thargs_p thrgs;
-thrgs.inputs = (char*) &inputs;
+thrgs.inputs = (char*) inputs;
 thrgs.inputs_size = sizeof(DATATYPE) * inputLength[1];
 
 sender(&thrgs);

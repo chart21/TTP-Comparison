@@ -67,23 +67,26 @@ void *receiver(void* threadParameters)
 	freeaddrinfo(servinfo); // all done with this structure
    
     //signal main thread that connection was established
-    printf("Locking conn \n");
+    printf("Player: Locking conn \n");
     pthread_mutex_lock(&mtx_connection_established);
-    printf("Locked conn \n");
+    printf("Player: Locked conn \n");
     num_successful_connections += 1; 
-    printf("Modyfying conn \n");
-    pthread_mutex_unlock(&mtx_connection_established);
-    printf("unlocked conn \n");
+    printf("Player: Modyfied conn \n");
+    /* pthread_mutex_unlock(&mtx_connection_established); */
+    /* printf("Player: Unlocked conn \n"); */
+    /* pthread_cond_signal(&cond_successful_connection); */
+    /* printf("Player: Signal conn \n"); */
+    /* //get start signal from main */
+    /* printf("Player: Locking conn \n"); */
+    /* pthread_mutex_lock(&mtx_connection_established); */
+    /* printf("Player: Locked conn \n"); */
     pthread_cond_signal(&cond_successful_connection);
-    printf("signal conn \n");
-    //get start signal from main
-    printf("Locking conn \n");
-    pthread_mutex_lock(&mtx_connection_established);
+    printf("Player: Signal conn \n");
     while (num_successful_connections != -1) {
-        printf("unlocking conn and waiting for signal \n");
+        printf("Player: Unlocking conn and waiting for signal \n");
         pthread_cond_wait(&cond_successful_connection, &mtx_connection_established);
     }
-        printf("done waiting \n");
+        printf("Player: Done waiting \n");
 
     
     printf("start rec \n");

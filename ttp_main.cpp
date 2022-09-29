@@ -40,9 +40,6 @@ for (int i = 0; i < input_players; i++) {
    inputs[i] = new DATATYPE[inputLength[i]]; // initialize arrays of each player with a size 
 }
 
-std::cout << inputs[0][0] << "\n";
-inputs[0][0] = 5;
-std::cout << inputs[0][0] << "\n";
 
 /* std::vector<DATATYPE> inputs[input_players]; */    
 pthread_t threads[input_players];
@@ -84,9 +81,7 @@ printf("m: singal conn \n");
 
 
 // read inputs of player 0
-std::cout << inputs[0][0] << "\n";
 readInputFromFile(inputs,0);
-std::cout << inputs[0][0] << "\n";
 
 
 //wait until received data from all players
@@ -112,9 +107,6 @@ for(int t=0;t<(input_players-1);t++) {
     pthread_join(threads[t],NULL);
 }
 
-std::cout << 10000000000 << "\n";
-std::cout << inputs[1][0] << "\n";
-std::cout << inputs[0][0] << "\n";
 performFunction(inputs);
 
 pthread_mutex_destroy(&mtx_connection_established);

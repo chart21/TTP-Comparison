@@ -4,7 +4,7 @@
             "adapter": "vscode-cpptools",
             "configuration": {
                 "request": "launch",
-                "program": "ttp_main.o",
+                "program": "player_main.o",
                 "cwd": "~/workspace/ttp_mpc",
                 "externalConsole":true,
                 "MiMode": "gdb"
