@@ -17,7 +17,7 @@
 #include "sockethelper.h"
 #define PORT "6000" // the port client will be connecting to 
 
-#define MAXDATASIZE 100 // max number of bytes we can get at once 
+#define MAXDATASIZE 100 // max number of bytes we can get at once -> currently not used 
 
  
 void *receiver(void* threadParameters)
@@ -32,8 +32,12 @@ void *receiver(void* threadParameters)
 	memset(&hints, 0, sizeof hints);
 	hints.ai_family = AF_UNSPEC;
 	hints.ai_socktype = SOCK_STREAM;
+   
+    char port[4];
+    sprintf(port, "%d", ((thargs_t*) threadParameters)->port);
+    printf(port);
 
-	if ((rv = getaddrinfo(((thargs_t*) threadParameters)->client, PORT, &hints, &servinfo)) != 0) {
+	if ((rv = getaddrinfo(((thargs_t*) threadParameters)->ip, port, &hints, &servinfo)) != 0) {
 		fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
 		exit(1);
 	}
@@ -80,14 +84,14 @@ void *receiver(void* threadParameters)
     /* printf("Player: Locking conn \n"); */
     /* pthread_mutex_lock(&mtx_connection_established); */
     /* printf("Player: Locked conn \n"); */
-    pthread_cond_signal(&cond_successful_connection);
+    pthread_cond_broadcast(&cond_successful_connection);
     printf("Player: Signal conn \n");
     while (num_successful_connections != -1) {
         printf("Player: Unlocking conn and waiting for signal \n");
         pthread_cond_wait(&cond_successful_connection, &mtx_connection_established);
     }
-        printf("Player: Done waiting \n");
-
+        printf("Player: Done waiting, unlocking \n");
+        pthread_mutex_unlock(&mtx_connection_established);
     
     printf("start rec \n");
     if ((recv(sockfd, ((thargs_t*) threadParameters)->inputs, ((thargs_t*) threadParameters)->inputs_size, MSG_WAITALL)) == -1) {

@@ -28,7 +28,8 @@ typedef struct thread_arguments {
   int threadID;
   char *inputs;
   int inputs_size;
-  char *client;
+  char *ip;
+  int port;
   char *hostname;
   //char *data;
   //char *length
@@ -37,6 +38,7 @@ typedef struct thread_arguments {
 typedef struct player_arguments {
   char *inputs;
   int inputs_size;
+  int port;
 } thargs_p;
 
 

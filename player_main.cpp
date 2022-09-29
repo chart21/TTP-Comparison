@@ -23,9 +23,11 @@ void readInputFromFile(DATATYPE inputs[],int playerID,int input_length)
 }
 
 
-int main()
+int main(int argc, char *argv[])
 {
-int player_id = 1;
+int player_id = atoi(argv[1]);
+
+
 int inputLength[] = INPUTSLENGTH;
 DATATYPE* inputs = new DATATYPE[inputLength[1]]; //create n pointers, each to hold a player's input
 
@@ -34,6 +36,7 @@ readInputFromFile(inputs,player_id,inputLength[1]);
 thargs_p thrgs;
 thrgs.inputs = (char*) inputs;
 thrgs.inputs_size = sizeof(DATATYPE) * inputLength[1];
+thrgs.port = base_port + player_id;
 
 sender(&thrgs);
 

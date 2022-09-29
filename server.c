@@ -1,7 +1,7 @@
 /*
 ** server.c -- a stream socket server demo
 */
-
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -16,7 +16,7 @@
 #include <signal.h>
 #include "sockethelper.h"
 
-#define PORT "6000"  // the port users will be connecting to
+//#define PORT "6000"  // the port users will be connecting to
 
 #define BACKLOG 1	 // how many pending connections queue will hold
 
@@ -68,8 +68,11 @@ void sender(void* threadParameters)
 	hints.ai_family = AF_UNSPEC;
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_flags = AI_PASSIVE; // use my IP
-
-	if ((rv = getaddrinfo(NULL, PORT, &hints, &servinfo)) != 0) {
+    
+    char port[4];
+    sprintf(port, "%d", ((thargs_p*) threadParameters)->port);
+    printf(port);
+	if ((rv = getaddrinfo(NULL, port, &hints, &servinfo)) != 0) {
 		fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
 		exit(1);
 	}

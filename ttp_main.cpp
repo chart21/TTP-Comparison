@@ -30,8 +30,17 @@ void readInputFromFile(DATATYPE** inputs,int playerID)
 }
 
 
-int main()
+int main(int argc, char *argv[])
 {
+char* ips[input_players-1];
+//char* hostnames[input_players-1];
+for(int i=0; i < input_players -1; i++)
+{
+    if(i < (argc - 1))
+        ips[i] = argv[i+1];
+    else
+        ips[i] = (char*) "127.0.0.1";
+}
 pthread_mutex_init(&mtx_connection_established, NULL);
 pthread_cond_init(&cond_successful_connection, NULL);
 DATATYPE** inputs = new DATATYPE*[input_players]; //create n pointers, each to hold a player's input
@@ -50,8 +59,9 @@ for(int t=0;t<(input_players-1);t++) {
     thrgs[t].inputs = (char*) inputs[t+1];
     thrgs[t].inputs_size = sizeof(DATATYPE) * inputLength[t+1];
     thrgs[t].threadID = t;
-    thrgs[t].client = (char*)"127.0.0.1";
+    thrgs[t].ip = ips[t];
     thrgs[t].hostname = (char*)"hostname";
+    thrgs[t].port = (int) base_port + (t+1);
     std::cout << "In main: creating thread " << t << "\n";
     ret = pthread_create(&threads[t], NULL, receiver, &thrgs[t]);
     if (ret){
@@ -73,7 +83,7 @@ printf("m: done waiting, modifying conn \n");
 num_successful_connections = -1; 
 pthread_mutex_unlock(&mtx_connection_established);
 printf("m: unlocked conn \n");
-pthread_cond_signal(&cond_successful_connection); //signal threads to start receiving
+pthread_cond_broadcast(&cond_successful_connection); //signal all threads to start receiving
 printf("m: singal conn \n");
  
 

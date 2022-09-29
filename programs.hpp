@@ -1,12 +1,6 @@
 #include <iostream>
 #include <vector>
-#define num_inputs 4
-#define DATATYPE int
-#define input_players 2
-#define performFunction psearch
-#define op +
-#define INPUTSLENGTH {4,1}
-
+#include "config.h"
 void psearch(DATATYPE** inputs)
 {
     DATATYPE result = 0;
@@ -35,11 +29,11 @@ void set_intersection(DATATYPE* inputs[input_players])
 void array_ops(DATATYPE* inputs[input_players])
 {
     DATATYPE result;
-    for(int i = 1; i < num_inputs; i++) {
+    for(int i = 0; i < num_inputs; i++) {
         result = inputs[0][i];
-        for (int j = 0; j < input_players; j++) {
+        for (int j = 1; j < input_players; j++) {
             
-        result op inputs[j][i];        
+        result = result op inputs[j][i];        
         }
         std::cout << result << "\n";
     }
