@@ -1,17 +1,13 @@
 //server (TTP) code
-#include <cstddef>
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <vector>
 #include <pthread.h>
 #include "programs.hpp"
 #include "networking.hpp"
 #include "sockethelper.h"
-void receiveInputFromNetwork(std::vector<DATATYPE> inputs, int playerID)
-{
+#include "time.h"
 
-}
 
 void readInputFromFile(DATATYPE** inputs,int playerID)
 {
@@ -84,10 +80,10 @@ pthread_cond_wait(&cond_successful_connection, &mtx_connection_established);
 num_successful_connections = -1; 
 pthread_cond_broadcast(&cond_successful_connection); //signal all threads to start receiving
 printf("All clients connected sucessfully, starting protocol and timer! \n");
- pthread_mutex_unlock(&mtx_connection_established);
+pthread_mutex_unlock(&mtx_connection_established);
 /* printf("m: unlocked conn \n"); */
 
-
+clock_t time_application_start = clock ();
 
 
 
@@ -117,11 +113,14 @@ readInputFromFile(inputs,0);
 for(int t=0;t<(input_players-1);t++) {
     pthread_join(threads[t],NULL);
 }
-
-printf("Player 0: Received all data, starting computation \n");
+clock_t time_data_received = clock ();
+//printf("Player 0: Received all data, starting computation \n");
 
 performFunction(inputs);
-printf("Computation finished! \n");
+clock_t time_computation_finished = clock ();
+printf("Time measured to read and receive inputs: %fs \n", double((time_data_received - time_application_start)) / CLOCKS_PER_SEC);
+printf("Time measured to perform computation: %fs \n", double((time_computation_finished - time_data_received)) / CLOCKS_PER_SEC);
+printf("Time measured in total: %fs \n", double((time_computation_finished - time_application_start)) / CLOCKS_PER_SEC);
 pthread_mutex_destroy(&mtx_connection_established);
 pthread_cond_destroy(&cond_successful_connection);
 pthread_mutex_destroy(&mtx_data_received);
