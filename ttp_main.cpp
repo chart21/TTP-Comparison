@@ -54,15 +54,16 @@ for (int i = 0; i < input_players; i++) {
 pthread_t threads[input_players];
 thargs_t thrgs[input_players];
 int ret;
-printf("creating receiving servers\n");
+/* printf("creating receiving servers\n"); */
 for(int t=0;t<(input_players-1);t++) {
+    thrgs[t].num_players = input_players;
     thrgs[t].inputs = (char*) inputs[t+1];
     thrgs[t].inputs_size = sizeof(DATATYPE) * inputLength[t+1];
     thrgs[t].threadID = t;
     thrgs[t].ip = ips[t];
     thrgs[t].hostname = (char*)"hostname";
     thrgs[t].port = (int) base_port + (t+1);
-    std::cout << "In main: creating thread " << t << "\n";
+    /* std::cout << "In main: creating thread " << t << "\n"; */
     ret = pthread_create(&threads[t], NULL, receiver, &thrgs[t]);
     if (ret){
         printf("ERROR; return code from pthread_create() is %d\n", ret);
@@ -72,20 +73,20 @@ for(int t=0;t<(input_players-1);t++) {
 
 // waiting until all threads connected
 
-printf("m: locking conn \n");
+/* printf("m: locking conn \n"); */
 pthread_mutex_lock(&mtx_connection_established);
-printf("m: locked conn \n");
+/* printf("m: locked conn \n"); */
 while (num_successful_connections < (input_players -1)) {
-printf("m: unlocking conn and waiting \n");
+/* printf("m: unlocking conn and waiting \n"); */
 pthread_cond_wait(&cond_successful_connection, &mtx_connection_established);
 }
-printf("m: done waiting, modifying conn \n");
+/* printf("m: done waiting, modifying conn \n"); */
 num_successful_connections = -1; 
-pthread_mutex_unlock(&mtx_connection_established);
-printf("m: unlocked conn \n");
 pthread_cond_broadcast(&cond_successful_connection); //signal all threads to start receiving
-printf("m: singal conn \n");
- 
+printf("All clients connected sucessfully, starting protocol and timer! \n");
+ pthread_mutex_unlock(&mtx_connection_established);
+/* printf("m: unlocked conn \n"); */
+
 
 
 
@@ -112,13 +113,15 @@ readInputFromFile(inputs,0);
 
                 
 
-printf("m: attempting join \n");
+/* printf("m: attempting join \n"); */
 for(int t=0;t<(input_players-1);t++) {
     pthread_join(threads[t],NULL);
 }
 
-performFunction(inputs);
+printf("Player 0: Received all data, starting computation \n");
 
+performFunction(inputs);
+printf("Computation finished! \n");
 pthread_mutex_destroy(&mtx_connection_established);
 pthread_cond_destroy(&cond_successful_connection);
 pthread_mutex_destroy(&mtx_data_received);

@@ -15,7 +15,6 @@
 
 #include <arpa/inet.h>
 #include "sockethelper.h"
-#define PORT "6000" // the port client will be connecting to 
 
 #define MAXDATASIZE 100 // max number of bytes we can get at once -> currently not used 
 
@@ -35,7 +34,6 @@ void *receiver(void* threadParameters)
    
     char port[4];
     sprintf(port, "%d", ((thargs_t*) threadParameters)->port);
-    printf(port);
 
 	if ((rv = getaddrinfo(((thargs_t*) threadParameters)->ip, port, &hints, &servinfo)) != 0) {
 		fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
@@ -43,7 +41,10 @@ void *receiver(void* threadParameters)
 	}
 
 	// loop through all the results and connect to the first we can
-	for(p = servinfo; p != NULL; p = p->ai_next) {
+	p = NULL;
+    printf("Player 0: Attempting to connect to Player %i ... \n", ((thargs_t*) threadParameters)->threadID+1);
+    while(p == NULL){
+    for(p = servinfo; p != NULL; p = p->ai_next) {
 		if ((sockfd = socket(p->ai_family, p->ai_socktype,
 				p->ai_protocol)) == -1) {
 			perror("client: socket");
@@ -51,7 +52,6 @@ void *receiver(void* threadParameters)
 		}
 
 		if (connect(sockfd, p->ai_addr, p->ai_addrlen) == -1) {
-			perror("client: connect");
 			close(sockfd);
 			continue;
 		}
@@ -59,23 +59,22 @@ void *receiver(void* threadParameters)
 		break;
 	}
 
-	if (p == NULL) {
-		fprintf(stderr, "client: failed to connect\n");
-		exit(2);
-	}
+    sleep(1);	
+			
+    }
 
 	inet_ntop(p->ai_family, get_in_addr((struct sockaddr *)p->ai_addr),
 			s, sizeof s);
-	printf("client: connecting to %s\n", s);
+	printf("Player 0: Connected to Player %i ... \n", ((thargs_t*) threadParameters)->port-1);
 
 	freeaddrinfo(servinfo); // all done with this structure
    
     //signal main thread that connection was established
-    printf("Player: Locking conn \n");
+    /* printf("Player: Locking conn \n"); */
     pthread_mutex_lock(&mtx_connection_established);
-    printf("Player: Locked conn \n");
+    /* printf("Player: Locked conn \n"); */
     num_successful_connections += 1; 
-    printf("Player: Modyfied conn \n");
+    /* printf("Player: Modyfied conn \n"); */
     /* pthread_mutex_unlock(&mtx_connection_established); */
     /* printf("Player: Unlocked conn \n"); */
     /* pthread_cond_signal(&cond_successful_connection); */
@@ -84,16 +83,22 @@ void *receiver(void* threadParameters)
     /* printf("Player: Locking conn \n"); */
     /* pthread_mutex_lock(&mtx_connection_established); */
     /* printf("Player: Locked conn \n"); */
-    pthread_cond_broadcast(&cond_successful_connection);
-    printf("Player: Signal conn \n");
-    while (num_successful_connections != -1) {
-        printf("Player: Unlocking conn and waiting for signal \n");
-        pthread_cond_wait(&cond_successful_connection, &mtx_connection_established);
+    if(num_successful_connections == ((thargs_t*) threadParameters)->num_players -1) {
+        pthread_cond_signal(&cond_successful_connection); //signal main thread that all threads have connected
+        /* printf("Player: Signal conn \n"); */
     }
-        printf("Player: Done waiting, unlocking \n");
-        pthread_mutex_unlock(&mtx_connection_established);
+    pthread_mutex_unlock(&mtx_connection_established);
+    /* printf("Player: Unlocked conn \n"); */
+
+    pthread_mutex_lock(&mtx_start_communicating); 
+    while (num_successful_connections != -1) { // wait for start signal from main thread
+        /* printf("Player: Unlocking conn and waiting for signal \n"); */ 
+        pthread_cond_wait(&cond_successful_connection, &mtx_start_communicating);
+    }
+        /* printf("Player: Done waiting, unlocking \n"); */
+        pthread_mutex_unlock(&mtx_start_communicating);
     
-    printf("start rec \n");
+    /* printf("start rec \n"); */
     if ((recv(sockfd, ((thargs_t*) threadParameters)->inputs, ((thargs_t*) threadParameters)->inputs_size, MSG_WAITALL)) == -1) {
 	    perror("recv");
 	    exit(1);
@@ -104,9 +109,6 @@ void *receiver(void* threadParameters)
     /* num_data_received += 1; */ 
     /* pthread_mutex_unlock(&mtx_data_received); */
     /* pthread_cond_signal(&cond_data_received); */
-    
-	printf("client: received data \n");
-
 	close(sockfd);
 
 

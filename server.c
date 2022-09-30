@@ -71,7 +71,6 @@ void sender(void* threadParameters)
     
     char port[4];
     sprintf(port, "%d", ((thargs_p*) threadParameters)->port);
-    printf(port);
 	if ((rv = getaddrinfo(NULL, port, &hints, &servinfo)) != 0) {
 		fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
 		exit(1);
@@ -120,7 +119,7 @@ void sender(void* threadParameters)
 		exit(1);
 	}
 
-	printf("server: waiting for connections...\n");
+	printf("Waiting for connections...\n");
 
 	  // main accept() loop
 		sin_size = sizeof their_addr;
@@ -132,7 +131,7 @@ void sender(void* threadParameters)
 		inet_ntop(their_addr.ss_family,
 			get_in_addr((struct sockaddr *)&their_addr),
 			s, sizeof s);
-		printf("server: got connection from %s\n", s);
+		printf("Got connection from %s\n", s);
     
 		/* if (!fork()) { // this is the child process */
 		/* 	close(sockfd); // child doesn't need the listener */
@@ -152,7 +151,7 @@ void sender(void* threadParameters)
         shutdown(sockfd, SHUT_RDWR);
 	    
 
-		printf("sever: connection closed to %s\n", s);
+		printf("Connection closed to %s\n", s);
 	
 }
 

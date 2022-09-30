@@ -22,8 +22,9 @@ void set_intersection(DATATYPE* inputs[input_players])
             if(inputs[0][i] == inputs[1][j])
                result[i] = 1; 
         }
-        std::cout << result[i] << "\n";
+        std::cout << result[i] << ", ";
         }
+    std::cout << "\n";
 }
 
 void array_ops(DATATYPE* inputs[input_players])
@@ -35,6 +36,7 @@ void array_ops(DATATYPE* inputs[input_players])
             
         result = result op inputs[j][i];        
         }
-        std::cout << result << "\n";
+        std::cout << result << " ";
     }
+    std::cout << "\n";
 }
