@@ -20,7 +20,7 @@ Only arguments you have to change have to be set
 ```
 
 The following configuartion uses port 6000 as base port, uses 100 inputs, int as datatype, 4 input players (P0-P3), performs function psearch and uses the following number of elements 100 (P0),1 (P1) 
-`./config.sh -b 6000 -n 100 -t int -p 4 -f psearch -i 100,1`
+> ./config.sh -b 6000 -n 100 -t int -p 4 -f psearch -i 100,1
 
 The following configuartion uses the previous configuartion but changes number of players to 3.
 `./config.sh -p 3`
