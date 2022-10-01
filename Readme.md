@@ -1,5 +1,5 @@
 # Perform a Secure Mulitparty Computation using a Trusted Third Party (TTP)
-This repository can be used as a benchmarks to compare a Secure Mulitparty Computation protocol with a TTP solution. Player 0 acts as a TTP and receives inputs from the other players over network sockets. P0 then performs the computation in plaintext.
+This repository can be used as a benchmark to compare a Secure Mulitparty Computation protocol with a TTP solution. Player 0 acts as a TTP and receives inputs from the other players in parallel over network sockets. P0 then performs the computation in plaintext.
 
 ## Usage
 First configure the program using config.sh then compile ttp_main.cpp and player_main.cpp. Local inputs of each player are fetched from the Player-Data folder.
@@ -31,12 +31,14 @@ The following configuartion uses the previous configuartion  but perfroms functi
 ### Compilation
 Compile TTP.
 > g++ ttp_main.cpp -o ttp_main.o -lpthread
+
 Compile player.
 > g++ player_main.cpp -o player_main.o -g
 
 ### Execution
 Execute P1 executable.
 > ./player_main.o 1
+
 Execute P2 executable.
 > ./player_main.o 2
 
@@ -70,4 +72,6 @@ Time measured to read and receive inputs: 0.000359s
 Time measured to perform computation: 0.000035s
 Time measured in total: 0.000394s
 ```
-
+### Features to be added
+- SSL Encryption.
+- Communication in network-byte order (Systems with different endianness are not supported currently).
