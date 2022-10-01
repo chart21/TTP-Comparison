@@ -7,7 +7,7 @@ First configure the program using config.sh then compile ttp_main.cpp and player
 ### Configuaration
 Run config.sh with your desired parameters.
 
-```bash
+```
 Usage: ./config.sh -b base_port -n num_inputs -t datatype -p num_input_players -f function_name -o operator -i input_length
 Only arguments you want to change have to be set.
         -b base_port: Multiple ports will be used for networking (e.g. 6000)
@@ -19,14 +19,14 @@ Only arguments you want to change have to be set.
         -i Number of elements per party in order if not the same as -n (e.g. 100,1)
 ```
 
-The following configuartion uses port 6000 as base port, uses 100 inputs, int as datatype, 4 input players (P0-P3), performs function psearch and uses the following number of elements 100 (P0),1 (P1). 
-> ./config.sh -b 6000 -n 100 -t int -p 4 -f psearch -i 100,1
+The following configuartion uses port 6000 as base port, uses 100 inputs, int as datatype, 2 input players (P0-P1), performs function psearch and uses the following number of elements 100 (P0),1 (P1). 
+> ./config.sh -b 6000 -n 100 -t int -p 2 -f psearch -i 100,1
 
-The following configuartion uses the previous configuartion but changes number of players to 3.
-> ./config.sh -p 3
-
-The following configuartion uses the previous configuartion  but perfroms function array_ops with operator + and 50 inputs per player.
+The following configuartion uses the previous configuration but performs function array_ops with operator + and 50 inputs per player.
 > ./config.sh -n 50 -f array_ops -o +
+
+The following configuartion uses the previous configuration but changes number of players to 3.
+> ./config.sh -p 3
 
 ### Compilation
 Compile TTP.
