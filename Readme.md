@@ -19,37 +19,36 @@ Only arguments you have to change have to be set
         -i Number of elements per party in order if not the same as -n (e.g. 100,1)
 ```
 
-The following configuartion uses port 6000 as base port, uses 100 inputs, int as datatype, 4 input players (P0-P3), performs function psearch and uses the following number of elements 100 (P0),1 (P1) 
+The following configuartion uses port 6000 as base port, uses 100 inputs, int as datatype, 4 input players (P0-P3), performs function psearch and uses the following number of elements 100 (P0),1 (P1). 
 > ./config.sh -b 6000 -n 100 -t int -p 4 -f psearch -i 100,1
 
 The following configuartion uses the previous configuartion but changes number of players to 3.
-`./config.sh -p 3`
+> ./config.sh -p 3
 
 The following configuartion uses the previous configuartion  but perfroms function array_ops with operator + and 50 inputs per player.
-`./config.sh -n 50 -f array_ops -o +`
+> ./config.sh -n 50 -f array_ops -o +
 
 ### Compilation
 Compile TTP.
-`g++ ttp_main.cpp -o ttp_main.o -lpthread`
+> g++ ttp_main.cpp -o ttp_main.o -lpthread
 Compile player.
-`g++ player_main.cpp -o player_main.o -g`
+> g++ player_main.cpp -o player_main.o -g
 
 ### Execution
 Execute P1 executable.
-`./player_main.o 1`
+> ./player_main.o 1
 Execute P2 executable.
-`./player_main.o 2`
+> ./player_main.o 2
 
 ...
 
 Execute P0 (TTP) executable. Not setting an ip address defaults to localhost.
-`./ttp_main.o ip_address_P1 ip_address_P2 ...`
+> ./ttp_main.o ip_address_P1 ip_address_P2 ...
 
-After successful execution P0 shows:
 ## Example
 
 Config.
-C```
+```C
 #define base_port 6000
 #define num_inputs 4
 #define DATATYPE int
