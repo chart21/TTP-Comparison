@@ -61,7 +61,7 @@ void *receiver(void* threadParameters)
 
 	inet_ntop(p->ai_family, get_in_addr((struct sockaddr *)p->ai_addr),
 			s, sizeof s);
-	printf("Player 0: Connected to Player %i ... \n", ((thargs_t*) threadParameters)->port-6000);
+	printf("Player 0: Connected to Player %i. \n", ((thargs_t*) threadParameters)->port-6000);
 
 	freeaddrinfo(servinfo); // all done with this structure
    
