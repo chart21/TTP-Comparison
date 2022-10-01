@@ -4,7 +4,7 @@ helpFunction()
 {
    echo ""
    echo "Usage: $0 -b base_port -n num_inputs -t datatype -p num_input_players -f function_name -o operator -i input_length"
-   echo -e "Only arguments you have to change have to be set"
+   echo -e "Only arguments you want to change have to be set."
    echo -e "\t-b base_port: Needs to be the same for all players for successful networking (e.g. 6000)"
    echo -e "\t-n Number of elements of party 0 (e.g. 100)"
    echo -e "\t-t Datatype of the inputs (e.g. int/float/...)"

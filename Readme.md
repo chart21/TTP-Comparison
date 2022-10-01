@@ -9,7 +9,7 @@ Run config.sh with your desired parameters.
 
 ```bash
 Usage: ./config.sh -b base_port -n num_inputs -t datatype -p num_input_players -f function_name -o operator -i input_length
-Only arguments you have to change have to be set
+Only arguments you want to change have to be set.
         -b base_port: Multiple ports will be used for networking (e.g. 6000)
         -n Number of elements of party 0 (e.g. 100)
         -t Datatype of the inputs (e.g. int/float/...)
