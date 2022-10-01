@@ -5,7 +5,7 @@ This repository can be used as a benchmark to compare a Secure Mulitparty Comput
 First configure the program using config.sh then compile ttp_main.cpp and player_main.cpp. Local inputs of each player are fetched from the Player-Data folder.
 
 ### Configuaration
-Run config.sh with your desired parameters.
+Run config.sh with your desired parameters. You can also manually edit the config.h file.
 
 ```
 Usage: ./config.sh -b base_port -n num_inputs -t datatype -p num_input_players -f function_name -o operator -i input_length
@@ -19,13 +19,13 @@ Only arguments you want to change have to be set.
         -i Number of elements per party in order if not the same as -n (e.g. 100,1)
 ```
 
-The following configuartion uses port 6000 as base port, uses 100 inputs, int as datatype, 2 input players (P0-P1), performs function psearch and uses the following number of elements 100 (P0),1 (P1). 
+The following configuration uses port 6000 as base port, uses 100 inputs, int as datatype, 2 input players (P0-P1), performs function psearch and uses the following number of elements 100 (P0),1 (P1). 
 > ./config.sh -b 6000 -n 100 -t int -p 2 -f psearch -i 100,1
 
-The following configuartion uses the previous configuration but performs function array_ops with operator + and 50 inputs per player.
+The following configuration uses the previous configuration but performs function array_ops with operator + and 50 inputs per player.
 > ./config.sh -n 50 -f array_ops -o +
 
-The following configuartion uses the previous configuration but changes number of players to 3.
+The following configuration uses the previous configuration but changes number of players to 3.
 > ./config.sh -p 3
 
 ### Compilation
@@ -44,7 +44,7 @@ Execute P2 executable.
 
 ...
 
-Execute P0 (TTP) executable. Not setting an ip address defaults to localhost.
+Execute P0 (TTP) executable. Not setting an IP address defaults to localhost.
 > ./ttp_main.o ip_address_P1 ip_address_P2 ...
 
 ## Example
