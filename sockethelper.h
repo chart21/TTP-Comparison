@@ -7,14 +7,6 @@ pthread_mutex_t mtx_start_communicating;
 pthread_cond_t cond_successful_connection;
 int num_successful_connections = 0;
 
-pthread_mutex_t mtx_data_received;
-pthread_cond_t cond_data_received;
-int num_data_received = 0;
-
-
-
-pthread_mutex_t dataToSend;
-pthread_mutex_t startSignal;
 // get sockaddr, IPv4 or IPv6:
 void *get_in_addr(struct sockaddr *sa)
 {

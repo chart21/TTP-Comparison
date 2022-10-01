@@ -1,6 +1,3 @@
-/*
-** server.c -- a stream socket server demo
-*/
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>

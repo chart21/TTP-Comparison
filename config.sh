@@ -4,9 +4,14 @@ helpFunction()
 {
    echo ""
    echo "Usage: $0 -b base_port -n num_inputs -t datatype -p num_input_players -f function_name -o operator -i input_length"
-   echo -e "\t-a Description of what is parameterA"
-   echo -e "\t-b Description of what is parameterB"
-   echo -e "\t-c Description of what is parameterC"
+   echo -e "Only arguments you have to change have to be set"
+   echo -e "\t-b base_port: Needs to be the same for all players for successful networking (e.g. 6000)"
+   echo -e "\t-n Number of elements of party 0 (e.g. 100)"
+   echo -e "\t-t Datatype of the inputs (e.g. int/float/...)"
+   echo -e "\t-p Number of players submitting inputs (e.g. 3)"
+   echo -e "\t-f Name of the function to execute (e.g. pSearch)"
+   echo -e "\t-o Operator to use for some functions (e.g. +/*)"
+   echo -e "\t-i Number of elements per party in order if not the same as -n (e.g. 100,1)"
    exit 1 # Exit script after printing help
 }
 
@@ -16,10 +21,10 @@ do
       b ) base_port="$OPTARG" ;;
       n ) num_inputs="$OPTARG" ;;
       t ) datatype="$OPTARG" ;;
-      p ) base_port="$OPTARG" ;;
-      f ) num_inputs="$OPTARG" ;;
-      o ) datatype="$OPTARG" ;;
-      i ) base_port="$OPTARG" ;;
+      p ) num_input_players="$OPTARG" ;;
+      f ) function_name="$OPTARG" ;;
+      o ) operator="$OPTARG" ;;
+      i ) input_length="$OPTARG" ;;
       ? ) helpFunction ;; # Print helpFunction in case parameter is non-existent
    esac
 done
@@ -47,7 +52,7 @@ then
 fi
 if [ ! -z "$num_input_players" ]
 then
-    sed -i -e "s/\(input_players \).*/\1$input_players/" config.h
+    sed -i -e "s/\(input_players \).*/\1$num_input_players/" config.h
 fi
 if [ ! -z "$function_name" ]
 then
@@ -59,6 +64,6 @@ then
 fi
 if [ ! -z "$input_length" ]
 then
-    sed -i -e "s/\(INPUTSLENGTH \).*/\1$input_length/" config.h
+    sed -i -e "s/\(INPUTSLENGTH \).*/\1\{$input_length\}/" config.h
 fi
 

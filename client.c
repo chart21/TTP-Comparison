@@ -1,7 +1,3 @@
-/*
-** client.c -- a stream socket client demo
-*/
-
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>

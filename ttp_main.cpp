@@ -1,4 +1,3 @@
-//server (TTP) code
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -38,6 +37,7 @@ for(int i=0; i < input_players -1; i++)
         ips[i] = (char*) "127.0.0.1";
 }
 pthread_mutex_init(&mtx_connection_established, NULL);
+pthread_mutex_init(&mtx_start_communicating, NULL);
 pthread_cond_init(&cond_successful_connection, NULL);
 DATATYPE** inputs = new DATATYPE*[input_players]; //create n pointers, each to hold a player's input
 int inputLength[] = INPUTSLENGTH;
@@ -122,9 +122,8 @@ printf("Time measured to read and receive inputs: %fs \n", double((time_data_rec
 printf("Time measured to perform computation: %fs \n", double((time_computation_finished - time_data_received)) / CLOCKS_PER_SEC);
 printf("Time measured in total: %fs \n", double((time_computation_finished - time_application_start)) / CLOCKS_PER_SEC);
 pthread_mutex_destroy(&mtx_connection_established);
+pthread_mutex_destroy(&mtx_start_communicating);
 pthread_cond_destroy(&cond_successful_connection);
-pthread_mutex_destroy(&mtx_data_received);
-pthread_cond_destroy(&cond_data_received);
 
 
 
