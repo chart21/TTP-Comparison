@@ -7,7 +7,7 @@ First configure the program using config.sh then compile ttp_main.cpp and player
 ### Configuaration
 Run config.sh with your desired parameters.
 
-bash```
+```bash
 Usage: ./config.sh -b base_port -n num_inputs -t datatype -p num_input_players -f function_name -o operator -i input_length
 Only arguments you have to change have to be set
         -b base_port: Multiple ports will be used for networking (e.g. 6000)
