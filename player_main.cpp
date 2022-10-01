@@ -8,18 +8,24 @@ void readInputFromFile(DATATYPE inputs[],int playerID,int input_length)
 {
     std::ifstream playerinput("Player-Data/Input-P" + std::to_string(playerID) + "-0");
     if (!playerinput.is_open())
-        std::cout << "Error reading from file";
+        std::cout << "Error reading from file \n";
 
     int i = 0;
     DATATYPE single_input;
     while (playerinput >> single_input)
     {
-        inputs[i] = single_input;
-        i++;
         if(i == input_length)
             break;
+        inputs[i] = single_input;
+        i++;
     }
-    playerinput.close();
+    if(i < input_length) {
+        printf("ERROR; Not enoguh inputs in player file.");
+        playerinput.close();
+        exit(-5);
+        }
+  
+   playerinput.close();
 }
 
 

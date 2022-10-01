@@ -1,3 +1,4 @@
+#include <cstdio>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -8,7 +9,7 @@
 #include "time.h"
 
 
-void readInputFromFile(DATATYPE** inputs,int playerID)
+void readInputFromFile(DATATYPE** inputs,int playerID, int input_length)
 {
     std::ifstream playerinput("Player-Data/Input-P" + std::to_string(playerID) + "-0");
     if (!playerinput.is_open())
@@ -16,12 +17,20 @@ void readInputFromFile(DATATYPE** inputs,int playerID)
 
     int i = 0;
     DATATYPE single_input;
+
     while (playerinput >> single_input)
     {
-        inputs[playerID][i] = single_input;
+        if(i == input_length)
+            break;
+        inputs[0][i] = single_input;
         i++;
     }
-    playerinput.close();
+    if(i < input_length) {
+        printf("ERROR; Not enoguh inputs in player file.");
+        playerinput.close();
+        exit(-5);
+        }
+   playerinput.close();
 }
 
 
@@ -88,7 +97,7 @@ clock_t time_application_start = clock ();
 
 
 // read inputs of player 0
-readInputFromFile(inputs,0);
+readInputFromFile(inputs,0,num_inputs);
 
 
 //wait until received data from all players
