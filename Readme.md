@@ -23,10 +23,10 @@ The following configuration uses port 6000 as base port, uses the TTP as an exte
 > ./config.sh -b 6000 -t 0 -d int -p 2 -f psearch -i 100,1
 
 The following configuration uses the previous configuration but performs function array_ops with operator + and 50 inputs per player.
-> ./config.sh -n 50 -f array_ops -o +
+> ./config.sh -f array_ops -o + -i 50,50
 
 The following configuration uses the previous configuration but changes number of players to 3.
-> ./config.sh -p 3
+> ./config.sh -p 3 -i 50,50,50
 
 The following configuration uses the previous configuration but lets the TTP act as Player 0 (supplying its own inputs).
 > ./config.sh -t 1
