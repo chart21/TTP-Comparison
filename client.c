@@ -8,8 +8,8 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
-
 #include <arpa/inet.h>
+#include "config.h"
 #include "sockethelper.h"
 
 #define MAXDATASIZE 100 // max number of bytes we can get at once -> currently not used 
@@ -38,7 +38,7 @@ void *receiver(void* threadParameters)
 
 	// loop through all the results and connect to the first we can
 	p = NULL;
-    printf("Player 0: Attempting to connect to Player %i ... \n", ((thargs_t*) threadParameters)->threadID+1);
+    printf("TTP: Attempting to connect to Player %i ... \n", ((thargs_t*) threadParameters)->player_id);
     while(p == NULL){
     for(p = servinfo; p != NULL; p = p->ai_next) {
 		if ((sockfd = socket(p->ai_family, p->ai_socktype,
@@ -61,7 +61,7 @@ void *receiver(void* threadParameters)
 
 	inet_ntop(p->ai_family, get_in_addr((struct sockaddr *)p->ai_addr),
 			s, sizeof s);
-	printf("Player 0: Connected to Player %i \n", ((thargs_t*) threadParameters)->port-6000);
+	printf("TTP: Connected to Player %i \n", ((thargs_t*) threadParameters)->port-6000);
 
 	freeaddrinfo(servinfo); // all done with this structure
    
@@ -79,7 +79,7 @@ void *receiver(void* threadParameters)
     /* printf("Player: Locking conn \n"); */
     /* pthread_mutex_lock(&mtx_connection_established); */
     /* printf("Player: Locked conn \n"); */
-    if(num_successful_connections == ((thargs_t*) threadParameters)->num_players -1) {
+    if(num_successful_connections == ((thargs_t*) threadParameters)->num_players) {
         pthread_cond_signal(&cond_successful_connection); //signal main thread that all threads have connected
         /* printf("Player: Signal conn \n"); */
     }

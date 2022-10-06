@@ -19,7 +19,7 @@ void *get_in_addr(struct sockaddr *sa)
 
 typedef struct thread_arguments {
   int num_players;
-  int threadID;
+  int player_id;
   char *inputs;
   int inputs_size;
   char *ip;

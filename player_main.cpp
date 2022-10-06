@@ -4,6 +4,7 @@
 #include "programs.hpp"
 #include "server.c"
 #include "sockethelper.h"
+#include "time.h"
 void readInputFromFile(DATATYPE inputs[],int playerID,int input_length)
 {
     std::ifstream playerinput("Player-Data/Input-P" + std::to_string(playerID) + "-0");
@@ -20,7 +21,7 @@ void readInputFromFile(DATATYPE inputs[],int playerID,int input_length)
         i++;
     }
     if(i < input_length) {
-        printf("ERROR; Not enoguh inputs in player file.");
+        printf("ERROR; Not enough inputs in player file.");
         playerinput.close();
         exit(-5);
         }
@@ -35,16 +36,20 @@ int player_id = atoi(argv[1]);
 
 
 int inputLength[] = INPUTSLENGTH;
-DATATYPE* inputs = new DATATYPE[inputLength[1]]; //create n pointers, each to hold a player's input
+DATATYPE* inputs = new DATATYPE[inputLength[player_id]]; 
 
-readInputFromFile(inputs,player_id,inputLength[1]);
-
+clock_t time_application_start = clock ();
+readInputFromFile(inputs,player_id,inputLength[player_id]);
+clock_t time_input_read = clock ();
 thargs_p thrgs;
 thrgs.inputs = (char*) inputs;
-thrgs.inputs_size = sizeof(DATATYPE) * inputLength[1];
+thrgs.inputs_size = sizeof(DATATYPE) * inputLength[player_id];
 thrgs.port = base_port + player_id;
 
 sender(&thrgs);
-
+clock_t time_computation_finished = clock ();
+printf("Time measured to read player input: %fs \n", double((time_input_read - time_application_start)) / CLOCKS_PER_SEC);
+printf("Time measured to send player input: %fs \n", double((time_computation_finished - time_input_read)) / CLOCKS_PER_SEC);
+printf("Time measured in total: %fs \n", double((time_computation_finished - time_application_start)) / CLOCKS_PER_SEC);
 return 0;
 }

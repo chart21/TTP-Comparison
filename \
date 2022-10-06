@@ -36,10 +36,6 @@ void readInputFromFile(DATATYPE** inputs,int playerID, int input_length)
 
 int main(int argc, char *argv[])
 {
-if(ttp_is_input_party == 1)
-    printf("TTP: Acting as input party P0 \n");
-else
-    printf("TTP: Acting as an external party \n");
 char* ips[input_players-ttp_is_input_party];
 //char* hostnames[input_players-1];
 for(int i=0; i < input_players -ttp_is_input_party; i++)
@@ -60,18 +56,18 @@ for (int i = 0; i < input_players; i++) {
 
 
 /* std::vector<DATATYPE> inputs[input_players]; */    
-pthread_t threads[input_players - ttp_is_input_party];
-thargs_t thrgs[input_players - ttp_is_input_party];
+pthread_t threads[input_players];
+thargs_t thrgs[input_players];
 int ret;
 /* printf("creating receiving servers\n"); */
 for(int t=0;t<(input_players-ttp_is_input_party);t++) {
-    thrgs[t].num_players = input_players - ttp_is_input_party;
+    thrgs[t].num_players = input_players;
     thrgs[t].inputs = (char*) inputs[t+ttp_is_input_party];
     thrgs[t].inputs_size = sizeof(DATATYPE) * inputLength[t+ttp_is_input_party];
-    thrgs[t].player_id = t+ttp_is_input_party;
+    thrgs[t].threadID = t;
     thrgs[t].ip = ips[t];
     thrgs[t].hostname = (char*)"hostname";
-    thrgs[t].port = (int) base_port + (t+ttp_is_input_party);
+    thrgs[t].port = (int) base_port + (t+1);
     /* std::cout << "In main: creating thread " << t << "\n"; */
     ret = pthread_create(&threads[t], NULL, receiver, &thrgs[t]);
     if (ret){

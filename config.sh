@@ -3,24 +3,24 @@
 helpFunction()
 {
    echo ""
-   echo "Usage: $0 -b base_port -n num_inputs -t datatype -p num_input_players -f function_name -o operator -i input_length"
+   echo "Usage: $0 -b base_port -t ttp_is_input_party -d datatype -p num_input_players -f function_name -o operator -i input_length"
    echo -e "Only arguments you want to change have to be set."
    echo -e "\t-b base_port: Needs to be the same for all players for successful networking (e.g. 6000)"
-   echo -e "\t-n Number of elements of party 0 (e.g. 100)"
-   echo -e "\t-t Datatype of the inputs (e.g. int/float/...)"
+   echo -e "\t-t 1 -> TTP is Player 0 and supplies inputs, 0 -> TTP is external party"
+   echo -e "\t-d Datatype of the inputs (e.g. int/float/...)"
    echo -e "\t-p Number of players submitting inputs (e.g. 3)"
    echo -e "\t-f Name of the function to execute (e.g. pSearch)"
    echo -e "\t-o Operator to use for some functions (e.g. +/*)"
-   echo -e "\t-i Number of elements per party in order if not the same as -n (e.g. 100,1)"
+   echo -e "\t-i Number of elements per party in order (e.g. 100,1)"
    exit 1 # Exit script after printing help
 }
 
-while getopts "b:n:t:p:f:o:i:" opt
+while getopts "b:t:d:p:f:o:i:" opt
 do
    case "$opt" in
       b ) base_port="$OPTARG" ;;
-      n ) num_inputs="$OPTARG" ;;
-      t ) datatype="$OPTARG" ;;
+      t ) ttp_is_input_party="$OPTARG" ;;
+      d ) datatype="$OPTARG" ;;
       p ) num_input_players="$OPTARG" ;;
       f ) function_name="$OPTARG" ;;
       o ) operator="$OPTARG" ;;
@@ -42,9 +42,9 @@ if [ ! -z "$base_port" ]
 then
     sed -i -e "s/\(base_port \).*/\1$base_port/" config.h
 fi
-if [ ! -z "$num_inputs" ]
+if [ ! -z "$ttp_is_input_party" ]
 then
-    sed -i -e "s/\(num_inputs \).*/\1$num_inputs/" config.h
+    sed -i -e "s/\(ttp_is_input_party \).*/\1$ttp_is_input_party/" config.h
 fi
 if [ ! -z "$datatype" ]
 then
