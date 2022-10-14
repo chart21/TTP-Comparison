@@ -55,7 +55,6 @@ void *receiver(void* threadParameters)
 		break;
 	}
 
-    sleep(1);	
 			
     }
 
@@ -89,7 +88,7 @@ void *receiver(void* threadParameters)
     pthread_mutex_lock(&mtx_start_communicating); 
     while (num_successful_connections != -1) { // wait for start signal from main thread
         /* printf("Player: Unlocking conn and waiting for signal \n"); */ 
-        pthread_cond_wait(&cond_successful_connection, &mtx_start_communicating);
+        pthread_cond_wait(&cond_start_signal, &mtx_start_communicating);
     }
         /* printf("Player: Done waiting, unlocking \n"); */
         pthread_mutex_unlock(&mtx_start_communicating);

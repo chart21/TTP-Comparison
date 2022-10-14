@@ -3,11 +3,11 @@
 #include <fstream>
 #include <string>
 #include <pthread.h>
+#include <chrono>
 #include "programs.hpp"
 #include "networking.hpp"
 #include "sockethelper.h"
 #include "time.h"
-
 
 void readInputFromFile(DATATYPE** inputs,int playerID, int input_length)
 {
@@ -52,6 +52,7 @@ for(int i=0; i < input_players -ttp_is_input_party; i++)
 pthread_mutex_init(&mtx_connection_established, NULL);
 pthread_mutex_init(&mtx_start_communicating, NULL);
 pthread_cond_init(&cond_successful_connection, NULL);
+pthread_cond_init(&cond_start_signal, NULL);
 DATATYPE** inputs = new DATATYPE*[input_players]; //create n pointers, each to hold a player's input
 int inputLength[] = INPUTSLENGTH;
 for (int i = 0; i < input_players; i++) {
@@ -91,11 +92,13 @@ pthread_cond_wait(&cond_successful_connection, &mtx_connection_established);
 }
 /* printf("m: done waiting, modifying conn \n"); */
 num_successful_connections = -1; 
-pthread_cond_broadcast(&cond_successful_connection); //signal all threads to start receiving
+pthread_cond_broadcast(&cond_start_signal); //signal all threads to start receiving
 printf("All clients connected sucessfully, starting protocol and timer! \n");
 pthread_mutex_unlock(&mtx_connection_established);
 /* printf("m: unlocked conn \n"); */
 
+std::chrono::high_resolution_clock::time_point c1 =
+        std::chrono::high_resolution_clock::now();
 clock_t time_application_start = clock ();
 
 
@@ -134,9 +137,13 @@ clock_t time_data_received = clock ();
 
 performFunction(inputs);
 clock_t time_computation_finished = clock ();
+double time = std::chrono::duration_cast<std::chrono::microseconds>(
+                     std::chrono::high_resolution_clock::now() - c1)
+                     .count();
 printf("Time measured to read and receive inputs: %fs \n", double((time_data_received - time_application_start)) / CLOCKS_PER_SEC);
 printf("Time measured to perform computation: %fs \n", double((time_computation_finished - time_data_received)) / CLOCKS_PER_SEC);
-printf("Time measured in total: %fs \n", double((time_computation_finished - time_application_start)) / CLOCKS_PER_SEC);
+printf("Time measured in total (Clock_t): %fs \n", double((time_computation_finished - time_application_start)) / CLOCKS_PER_SEC);
+printf("Time measured in total (Chrono): %fs \n", time / 1000000);
 pthread_mutex_destroy(&mtx_connection_established);
 pthread_mutex_destroy(&mtx_start_communicating);
 pthread_cond_destroy(&cond_successful_connection);

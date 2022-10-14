@@ -33,10 +33,10 @@ The following configuration uses the previous configuration but lets the TTP act
 
 ### Compilation
 Compile TTP.
-> g++ ttp_main.cpp -o ttp_main.o -lpthread
+> g++ ttp_main.cpp -o ttp_main.o -lpthread -Ofast
 
 Compile player.
-> g++ player_main.cpp -o player_main.o
+> g++ player_main.cpp -o player_main.o -Ofast
 
 ### Execution
 Execute P0 executable. (Assuming TTP is set to external via -t 0)

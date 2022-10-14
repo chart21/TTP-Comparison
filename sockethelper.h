@@ -5,6 +5,7 @@
 pthread_mutex_t mtx_connection_established;
 pthread_mutex_t mtx_start_communicating;
 pthread_cond_t cond_successful_connection;
+pthread_cond_t cond_start_signal;
 int num_successful_connections = 0;
 
 // get sockaddr, IPv4 or IPv6:
